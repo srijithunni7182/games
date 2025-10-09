@@ -17,9 +17,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Ensure correct directory for the build, if necessary
-                dir('numberGuessGame') { 
-                    checkout scm // Explicitly check out the code
-                }
+
             }
         }
 // ---------------------------------------------------------------- //
