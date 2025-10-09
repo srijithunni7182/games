@@ -15,6 +15,7 @@ pipeline {
                     powershell 'mvn clean install -DskipTests'
                 }
             }
+        }
         stage('Test') {
             steps {
                 // Since we used 'tools', Jenkins automatically adds Maven to the PATH.
@@ -24,5 +25,4 @@ pipeline {
             }
         }
     }
-}
 }
