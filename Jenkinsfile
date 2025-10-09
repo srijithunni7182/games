@@ -11,7 +11,7 @@ pipeline {
         stage('Build & Test') {
             steps {
                 // Since we used 'tools', Jenkins automatically adds Maven to the PATH.
-                sh 'mvn clean install'
+                powershell 'mvn clean install'
             }
         }
     }
