@@ -13,13 +13,6 @@ pipeline {
         cron('0 0 * * *') 
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                // Ensure correct directory for the build, if necessary
-
-            }
-        }
 // ---------------------------------------------------------------- //
 // 1. THE BUILD STAGE: Compiles the code and packages the artifact //
 // ---------------------------------------------------------------- //
