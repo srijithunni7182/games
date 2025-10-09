@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guess the Number Game</title>
+    <style>
+        body { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); font-family: 'Segoe UI', sans-serif; color: #333; text-align: center; padding: 40px; }
+        .container { background: #fff8e1; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.1); display: inline-block; padding: 32px 48px; }
+        input[type=number] { font-size: 1.2em; padding: 8px; border-radius: 8px; border: 1px solid #fda085; margin-right: 8px; }
+        button { background: #fda085; color: #fff; border: none; border-radius: 8px; padding: 10px 24px; font-size: 1.1em; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #f6d365; color: #333; }
+        .hint, .result { margin-top: 24px; font-size: 1.2em; }
+        .guesses { margin-top: 16px; color: #888; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Guess the Number!</h1>
+        <p>Enter a number between 1 and 100:</p>
+        <input type="number" id="guessInput" min="1" max="100">
+        <button onclick="makeGuess()">Guess</button>
+        <div class="result" id="result"></div>
+        <div class="hint" id="hint"></div>
+        <div class="guesses" id="guesses"></div>
+    </div>
+    <script>
+        let gameId = null;
+        let guesses = [];
+        async function startGame() {
+            const res = await fetch('/api/game/start', { method: 'POST' });
+            const data = await res.json();
+            gameId = data.gameId;
+            guesses = [];
+            document.getElementById('result').textContent = '';
+            document.getElementById('hint').textContent = '';
+            document.getElementById('guesses').textContent = '';
+        }
+        async function makeGuess() {
+            const guess = parseInt(document.getElementById('guessInput').value);
+            if (!gameId) return;
+            const res = await fetch('/api/game/guess', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ gameId, guess })
+            });
+            const data = await res.json();
+            if (data.error) {
+                document.getElementById('result').textContent = data.error;
+                return;
+            }
+            document.getElementById('result').textContent = 'Your guess is ' + data.result + '!';
+            document.getElementById('hint').textContent = 'Hint: ' + data.hint;
+            document.getElementById('guesses').textContent = 'Guesses so far: ' + data.guesses.join(', ');
+            if (data.result === 'correct') {
+                setTimeout(() => { alert('Congratulations! Starting a new game.'); startGame(); }, 1500);
+            }
+        }
+        window.onload = startGame;
+    </script>
+</body>
+</html>
+
