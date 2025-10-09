@@ -5,6 +5,14 @@ pipeline {
         maven 'M3' 
     }
 
+    triggers {
+        // Run every minute if there's an SCM change
+        pollSCM('H/1 * * * *') 
+        
+        // Run every day at midnight (00:00)
+        cron('0 0 * * *') 
+    }
+
     stages {
         stage('Checkout') {
             steps {
