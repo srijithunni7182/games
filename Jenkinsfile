@@ -29,7 +29,7 @@ pipeline {
             steps {
                 dir('numberGuessGame') {
                     // This command skips the tests and only compiles and packages
-                    sh 'mvn -B clean package -DskipTests'
+                    powershell 'mvn -B clean package -DskipTests'
                 }
             }
         }
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 dir('numberGuessGame') {
                     // This command runs the tests on the compiled code
-                    sh 'mvn test'
+                    powershell 'mvn test'
                 }
             }
             post {
