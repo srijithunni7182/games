@@ -12,10 +12,10 @@ pipeline {
         // Run every day at midnight (00:00)
         cron('0 0 * * *') 
     }
-
-// ---------------------------------------------------------------- //
-// 1. THE BUILD STAGE: Compiles the code and packages the artifact //
-// ---------------------------------------------------------------- //
+    stages {
+    // ---------------------------------------------------------------- //
+    // 1. THE BUILD STAGE: Compiles the code and packages the artifact //
+    // ---------------------------------------------------------------- //
         stage('Build') {
             steps {
                 dir('numberGuessGame') {
@@ -25,9 +25,9 @@ pipeline {
             }
         }
 
-// --------------------------------------------------------- //
-// 2. THE TEST STAGE: Runs tests on the packaged artifact //
-// --------------------------------------------------------- //
+    // --------------------------------------------------------- //
+    // 2. THE TEST STAGE: Runs tests on the packaged artifact //
+    // --------------------------------------------------------- //
         stage('Test') {
             steps {
                 dir('numberGuessGame') {
@@ -43,9 +43,9 @@ pipeline {
             }
         }
         
-// --------------------------------------------------------- //
-// 3. (Optional) ARCHIVE STAGE: Save the build artifact      //
-// --------------------------------------------------------- //
+    // --------------------------------------------------------- //
+    // 3. (Optional) ARCHIVE STAGE: Save the build artifact      //
+    // --------------------------------------------------------- //
         stage('Archive Artifacts') {
             when {
                 // Only archive if all previous stages (including Test) succeeded
@@ -61,4 +61,4 @@ pipeline {
             }
         }
     }
-
+}
