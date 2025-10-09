@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-        stage('Build) {
+        stage('Build') {
             steps {
                 // Since we used 'tools', Jenkins automatically adds Maven to the PATH.
                 dir('numberGuessGame') { 
