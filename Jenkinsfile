@@ -58,7 +58,9 @@ pipeline {
         stage('Archive Artifacts') {
             when {
                 // Only archive if all previous stages (including Test) succeeded
-                result 'SUCCESS' 
+                expression { 
+                    return currentBuild.result == 'SUCCESS' || currentBuild.result == null
+                }
             }
             steps {
                 dir('numberGuessGame') {
