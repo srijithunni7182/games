@@ -11,7 +11,9 @@ pipeline {
         stage('Build & Test') {
             steps {
                 // Since we used 'tools', Jenkins automatically adds Maven to the PATH.
-                powershell 'mvn clean install'
+                dir('numberGuessGame') { 
+                    powershell 'mvn clean install'
+                }
             }
         }
     }
