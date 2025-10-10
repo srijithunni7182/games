@@ -60,5 +60,45 @@ pipeline {
                 }
             }
         }
+        stage('Simulate Blue/Green Redeployment') {
+            steps {
+                script {
+                    def appDir = "numberGuessGame"
+                    def jarFile = findFiles(glob: "${appDir}/target/*.jar")[0]
+                    def jarPath = jarFile.path
+                    echo "1. Checking for old service on port 8080 (Simulated Old Version)..."
+                    // Kill any old instance
+                    sh 'fuser -k 8080/tcp || true'
+                    echo "2. Launching NEW application version (Build ${env.BUILD_NUMBER})..."
+                    sh "nohup java -jar ${jarPath} > app.log 2>&1 &"
+                    sleep 15 // Give it time to start up
+                    echo "3. Traffic Switch: Verifying NEW application health..."
+                    sh 'curl --fail http://localhost:8080/ || exit 1'
+                    echo "4. Success! New version is live on simulated server."
+                }
+            }
+            post {
+                always {
+                    echo "Safety net: Cleaning up port 8080 for the next deployment..."
+                    sh 'fuser -k 8080/tcp || true'
+                }
+            }
+        }
+        stage('Visualization') {
+            parallel {
+                stage('Show Metrics') {
+                    steps {
+                        echo 'Visualizing build metrics...'
+                        // Add real visualization logic here
+                    }
+                }
+                stage('Show Logs') {
+                    steps {
+                        echo 'Visualizing build logs...'
+                        // Add real visualization logic here
+                    }
+                }
+            }
+        }
     }
 }
