@@ -110,11 +110,18 @@ pipeline {
                     echo "Safety net: Cleaning up port 8080 for the next deployment... 🛡️"
                     // Repeat the cleanup logic to ensure the process is killed even if the health check failed.
                     powershell '''
-                        $PID = (Get-NetTCPConnection -LocalPort 8080 -State Listen).OwningProcess
-                        if ($PID) {
-                            Write-Host "Safety kill process with PID: $PID"
-                            Stop-Process -Id $PID -Force -ErrorAction SilentlyContinue
+                        # Use a unique variable name to avoid conflict with Jenkins environment variables
+                        $AppPID = (Get-NetTCPConnection -LocalPort 8080 -State Listen -ErrorAction SilentlyContinue).OwningProcess
+
+                        if ($AppPID) {
+                            Write-Host "Killing process with PID: $AppPID"
+                            # Stop-Process must also handle failure (e.g., if the process just stopped)
+                            Stop-Process -Id $AppPID -Force -ErrorAction SilentlyContinue
+                        } else {
+                            Write-Host "Port 8080 is already free. No cleanup needed."
                         }
+                        # Important: Ensure the script itself always returns success (exit 0)
+                        exit 0
                     '''
                 }
             }
