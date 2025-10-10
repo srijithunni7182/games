@@ -73,7 +73,7 @@ pipeline {
 
                     // PowerShell command to find the process ID (PID) listening on port 8080 and forcefully stop it.
                     // -ErrorAction SilentlyContinue prevents the pipeline from failing if the port is already free.
-                    pwsh '''
+                    powershell '''
                         $PID = (Get-NetTCPConnection -LocalPort 8080 -State Listen).OwningProcess
                         if ($PID) {
                             Write-Host "Killing existing process with PID: $PID"
@@ -88,7 +88,7 @@ pipeline {
 
                     // `Start-Process` runs the command in the background. `-NoNewWindow` is critical.
                     // We redirect output to a file to keep the console clean.
-                    pwsh "Start-Process -FilePath 'java' -ArgumentList '-jar', \"${jarPath}\" -NoNewWindow -RedirectStandardOutput 'app.log' -RedirectStandardError 'app.log'"
+                    powershell "Start-Process -FilePath 'java' -ArgumentList '-jar', \"${jarPath}\" -NoNewWindow -RedirectStandardOutput 'app.log' -RedirectStandardError 'app.log'"
 
                     echo "3. Giving the app 15 seconds to start up..."
                     sleep 15 // Groovy 'sleep' works fine
@@ -97,7 +97,7 @@ pipeline {
                     echo "4. Traffic Switch: Verifying NEW application health... ✅"
                     // Invoke-WebRequest is the native PowerShell way to check an HTTP endpoint.
                     // -StatusCode 200 checks for a successful response.
-                    pwsh 'Invoke-WebRequest -Uri "http://localhost:8080/" -StatusCode 200 -UseBasicParsing'
+                    powershell 'Invoke-WebRequest -Uri "http://localhost:8080/" -StatusCode 200 -UseBasicParsing'
 
                     echo "5. Success! New version is live on simulated server."
                 }
@@ -109,7 +109,7 @@ pipeline {
                 always {
                     echo "Safety net: Cleaning up port 8080 for the next deployment... 🛡️"
                     // Repeat the cleanup logic to ensure the process is killed even if the health check failed.
-                    pwsh '''
+                    powershell '''
                         $PID = (Get-NetTCPConnection -LocalPort 8080 -State Listen).OwningProcess
                         if ($PID) {
                             Write-Host "Safety kill process with PID: $PID"
