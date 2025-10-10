@@ -60,7 +60,7 @@ pipeline {
                 }
             }
         }
-        stage('Simulate Blue/Green Redeployment ') {
+        stage('Simulate Blue/Green Redeployment') {
             steps {
                 script {
                     def appDir = "numberGuessGame"
@@ -102,33 +102,6 @@ pipeline {
                     powershell 'Invoke-WebRequest -Uri "http://localhost:8080/" -StatusCode 200 -UseBasicParsing'
 
                     echo "5. Success! New version is live on simulated server."
-                }
-            }
-            // ---------------------------------------------------------------- //
-            // POST SECTION: Final safety net cleanup (Guaranteed Execution)
-            // ---------------------------------------------------------------- //
-            post {
-                always {
-                    echo "Safety net: Cleaning up port 8080 for the next deployment... 🛡️"
-
-                    // The post section requires its own error handling, as Groovy try-catch
-                    // doesn't directly wrap the post block. We'll add '|| true' to the final bat command.
-                    bat '''
-                        FOR /F "tokens=5" %%a in ('netstat -ano ^| findstr :8080 ^| findstr LISTENING') DO (
-                            taskkill /F /PID %%a
-                        )
-                    '''
-                    // Note: Since 'taskkill' can sometimes return non-zero exit codes even when successful,
-                    // wrapping the entire stage in a Groovy try-catch is the most reliable way
-                    // to suppress errors. However, placing the complex bat logic here without a Groovy try-catch
-                    // means we risk failure if the shell exits with an error code.
-                    // For maximum safety in the 'always' block, use the simplest, most resilient kill command:
-
-                    powershell '''
-                        # Use this simpler powershell kill command as a fail-safe, ignoring all errors
-                        (Get-NetTCPConnection -LocalPort 8080 -State Listen -ErrorAction SilentlyContinue).OwningProcess | Stop-Process -Force -ErrorAction SilentlyContinue
-                        exit 0
-                    '''
                 }
             }
         }
