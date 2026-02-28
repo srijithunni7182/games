@@ -1,0 +1,611 @@
+/* ── Design Tokens ────────────────────────────────────────────────────────────── */
+
+:root {
+  --color-primary: #6366f1;
+  --color-primary-dark: #4f46e5;
+  --color-primary-light: #eef2ff;
+  --color-x: #6366f1;
+  --color-x-light: #eef2ff;
+  --color-o: #ec4899;
+  --color-o-light: #fdf2f8;
+  --color-bg: #ffffff;
+  --color-surface: #f9fafb;
+  --color-surface-hover: #f3f4f6;
+  --color-border: #e5e7eb;
+  --color-border-focus: #6366f1;
+  --color-text: #111827;
+  --color-text-muted: #6b7280;
+  --color-text-faint: #9ca3af;
+  --color-winning: #fef9c3;
+  --color-winning-border: #eab308;
+
+  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  --cell-size: 100px;
+  --max-w: 480px;
+  --gap: 3px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Reset & Base ─────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  background: var(--color-surface);
+  color: var(--color-text);
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  width: 100%;
+  max-width: var(--max-w);
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* ── Screen base ──────────────────────────────────────────────────────────────── */
+
+.screen {
+  animation: fade-up 220ms var(--ease-out) both;
+}
+
+/* ── Menu Screen ──────────────────────────────────────────────────────────────── */
+
+.menu-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100dvh - 32px);
+}
+
+.menu-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.app-brand {
+  text-align: center;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.app-subtitle {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+}
+
+.mode-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 340px;
+}
+
+.mode-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 120ms ease;
+  text-align: left;
+}
+
+.mode-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.mode-card:active {
+  transform: translateY(0);
+}
+
+.mode-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.mode-label {
+  display: block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.mode-desc {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ── Setup Screen ─────────────────────────────────────────────────────────────── */
+
+.setup-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100dvh - 32px);
+}
+
+.setup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.back-btn {
+  align-self: flex-start;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  transition: color 150ms ease, background 150ms ease;
+}
+
+.back-btn:hover {
+  color: var(--color-text);
+  background: var(--color-surface-hover);
+}
+
+.setup-heading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.difficulty-cards {
+  display: flex;
+  gap: 10px;
+}
+
+.difficulty-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 10px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.difficulty-card:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.difficulty-card.active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.diff-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.diff-desc {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.difficulty-card.active .diff-label {
+  color: var(--color-primary-dark);
+}
+
+.symbol-selector {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.symbol-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.symbol-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.symbol-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+}
+
+.symbol-btn:hover {
+  border-color: var(--color-primary);
+}
+
+.symbol-btn[data-symbol='X'].active {
+  border-color: var(--color-x);
+  background: var(--color-x-light);
+  color: var(--color-x);
+}
+
+.symbol-btn[data-symbol='O'].active {
+  border-color: var(--color-o);
+  background: var(--color-o-light);
+  color: var(--color-o);
+}
+
+.play-btn {
+  padding: 14px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+  transition: background 150ms ease, transform 120ms ease, box-shadow 150ms ease;
+}
+
+.play-btn:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.45);
+}
+
+.play-btn:active {
+  transform: translateY(0);
+}
+
+/* ── Game Screen ──────────────────────────────────────────────────────────────── */
+
+.game-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 0 24px;
+}
+
+/* Score bar */
+
+.score-bar {
+  display: flex;
+  width: 100%;
+  max-width: calc(var(--cell-size) * 3 + var(--gap) * 2);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.score-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 8px;
+  gap: 2px;
+}
+
+.score-item + .score-item {
+  border-left: 2px solid var(--color-border);
+}
+
+.score-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.score-item--x .score-label { color: var(--color-x); }
+.score-item--o .score-label { color: var(--color-o); }
+
+.score-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.score-item--x .score-value { color: var(--color-x); }
+.score-item--o .score-value { color: var(--color-o); }
+
+/* Status text */
+
+.game-status {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  min-height: 1.6em;
+  transition: color 200ms ease;
+}
+
+.game-status--result {
+  font-size: 1.4rem;
+  color: var(--color-text);
+  animation: fade-up 200ms var(--ease-out) both;
+}
+
+/* Board */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, var(--cell-size));
+  grid-template-rows: repeat(3, var(--cell-size));
+  gap: var(--gap);
+  background: var(--color-border);
+  border: var(--gap) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+/* Cells */
+
+.cell {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 2.8rem;
+  font-weight: 700;
+  background: var(--color-bg);
+  color: transparent;
+  border: none;
+  border-radius: 0;
+  transition: background 130ms ease;
+  user-select: none;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Non-empty cells show the mark colour */
+.cell[data-mark='X'] {
+  color: var(--color-x);
+  animation: mark-appear 200ms var(--ease-bounce) both;
+}
+
+.cell[data-mark='O'] {
+  color: var(--color-o);
+  animation: mark-appear 200ms var(--ease-bounce) both;
+}
+
+/* Hover only on interactive empty cells */
+.cell--interactive:hover {
+  background: var(--color-surface-hover);
+  cursor: pointer;
+}
+
+.cell--interactive:active {
+  background: var(--color-surface);
+}
+
+/* Winning cells */
+.cell--winning {
+  background: var(--color-winning);
+  animation: winning-cell 350ms var(--ease-out) both;
+}
+
+/* Board locked state — no pointer events on cells */
+.board--locked .cell--interactive {
+  cursor: default;
+}
+
+/* ── Action Buttons ───────────────────────────────────────────────────────────── */
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: calc(var(--cell-size) * 3 + var(--gap) * 2);
+}
+
+.btn {
+  flex: 1;
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  transition: background 140ms ease, border-color 140ms ease, transform 100ms ease;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 2px solid var(--color-border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-border-focus);
+  background: var(--color-primary-light);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 2px solid transparent;
+}
+
+.btn-ghost:hover {
+  background: var(--color-surface-hover);
+  color: var(--color-text);
+}
+
+/* ── Animations ───────────────────────────────────────────────────────────────── */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mark-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes winning-cell {
+  0% { background: var(--color-bg); }
+  50% { background: #fde68a; }
+  100% { background: var(--color-winning); }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary-light: #1e1b4b;
+    --color-x-light: #1e1b4b;
+    --color-o-light: #4a044e;
+    --color-bg: #1f2937;
+    --color-surface: #111827;
+    --color-surface-hover: #374151;
+    --color-border: #374151;
+    --color-text: #f9fafb;
+    --color-text-muted: #9ca3af;
+    --color-text-faint: #6b7280;
+    --color-winning: #451a03;
+    --color-winning-border: #92400e;
+  }
+
+  body {
+    background: var(--color-surface);
+  }
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────────── */
+
+@media (min-width: 420px) {
+  :root {
+    --cell-size: 112px;
+  }
+
+  .app-title {
+    font-size: 3rem;
+  }
+
+  .cell {
+    font-size: 3.2rem;
+  }
+}
+
+@media (min-width: 540px) {
+  :root {
+    --cell-size: 128px;
+  }
+
+  .cell {
+    font-size: 3.6rem;
+  }
+}
