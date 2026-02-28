@@ -132,13 +132,15 @@ That's what I couldn't do with any other tool.
 
 ## The Technical Failures, For Completeness
 
-**U-DC-03:** Test mocked `Math.random` to exactly `0.5` for a `< 0.5` condition. `0.5 < 0.5` is false. The operator was wrong in the implementation too — flipped `<` to `>=`. Lesson: never mock to an exact boundary value.
+Once I had the real test output, I asked Claude to identify the root cause of each failure and fix them.
 
-**U-DC-05:** 500 Minimax calls on an empty board. Empty board = 362,880 game paths per call. Needed four minutes; timeout was five seconds. Fix: near-terminal board (2 empty cells), 200 iterations.
+**U-DC-03:** Test mocked `Math.random` to exactly `0.5` for a `< 0.5` condition. `0.5 < 0.5` is false. The operator was also wrong in the implementation — Claude flipped `<` to `>=`. Lesson: never mock to an exact boundary value.
 
-**I-02:** Build-orchestrator rewrote an integration test using a move sequence it invented. The sequence produced an X win on move four, before O could complete the middle column it was supposed to win via. Fix: trace the sequence manually before asserting.
+**U-DC-05:** 500 Minimax calls on an empty board. Empty board = 362,880 game paths per call. Needed four minutes; timeout was five seconds. Claude redesigned the test to use a near-terminal board (2 empty cells) with 200 iterations instead.
 
-**Dead ternary:** `const firstPlayer = state.humanSymbol === 'X' ? 'X' : 'X'` — both branches return `'X'`. TypeScript accepted it, all tests passed, the game worked. The code was still wrong. No automated tool catches this because it's not an error — it's a lie.
+**I-02:** Build-orchestrator had rewritten an integration test using a move sequence it invented. That sequence produced an X win on move four, before O could complete the intended middle-column win. Claude traced the correct sequence and fixed it.
+
+**Dead ternary:** Claude spotted `const firstPlayer = state.humanSymbol === 'X' ? 'X' : 'X'` — both branches return `'X'`. TypeScript accepted it, all tests passed, the game worked. The code was still wrong. No automated tool catches this because it's not an error — it's a lie.
 
 ---
 
