@@ -4,3 +4,4 @@ coverage/
 .DS_Store
 *.local
 .claude/
+tic-tac-toe/docs/BUILDING-WITH-CLAUDE-CODE.md
